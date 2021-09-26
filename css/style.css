@@ -6,7 +6,7 @@
 
 a {
   text-decoration: none;
-  color: black;
+  color: rgb(0, 0, 0);
 }
 
 body {
@@ -14,14 +14,61 @@ body {
   overflow-x: hidden;
 }
 
+input.form-control:focus,
+button:focus {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+#item-lista {
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid rgb(18, 18, 18);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(29, 29, 29);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#item-lista:active {
+  background-color: rgb(0, 0, 0) !important;
+}
+
+#item-lista:hover {
+  background-color: rgb(18, 18, 18);
+  color: rgb(255, 255, 255);
+}
+
+#item-lista:hover span:nth-child(2) {
+  color: rgb(255, 255, 0);
+}
+#item-lista > span:nth-child(2) {
+  color: rgba(255, 255, 0, 0.5);
+  font-size: 0.875rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
 #logo {
   max-width: 200px;
 }
 
+#pesquisar {
+  border: 1px solid rgba(255, 255, 0, 0.75);
+  color: rgba(255, 255, 0, 0.75);
+  background-color: rgb(0, 0, 0);
+}
+
+#pesquisar:active {
+  background-color: rgba(255, 255, 0, 0.75);
+  color: rgb(0, 0, 0);
+}
+
 #recursos-api .card {
-  background-color: black;
-  border: 2px solid yellow;
-  color: yellow;
+  background-color: rgb(0, 0, 0);
+  border: 2px solid rgba(255, 255, 0, 0.75);
+  color: rgba(255, 255, 0, 0.75);
   height: 200px;
   text-transform: uppercase;
   justify-content: center;
@@ -29,6 +76,6 @@ body {
 }
 
 #recursos-api .card:active {
-    background-color: yellow;
-    color: black;
+  background-color: rgba(255, 255, 0, 0.75);
+  color: rgb(0, 0, 0);
 }
