@@ -20,6 +20,21 @@ button:focus {
   box-shadow: none !important;
 }
 
+#indice-pagina {
+  padding: 0;
+}
+
+#indice-pagina > button {
+  flex: none;
+  background-color: rgba(255, 255, 0, 0.9);
+  border: 1px solid rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+}
+
+#indice-pagina > button:hover {
+  background-color: rgba(255, 255, 0, 0.75);
+}
+
 #item-lista {
   border-radius: 0;
   border: none;
@@ -28,7 +43,7 @@ button:focus {
   justify-content: space-between;
   align-items: center;
   background-color: rgb(29, 29, 29);
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 #item-lista:active {
@@ -44,7 +59,7 @@ button:focus {
   color: rgb(255, 255, 0);
 }
 #item-lista > span:nth-child(2) {
-  color: rgba(255, 255, 0, 0.5);
+  color: rgba(255, 255, 0, 0.75);
   font-size: 0.875rem;
   padding: 5px 10px;
   border-radius: 5px;
@@ -55,20 +70,20 @@ button:focus {
 }
 
 #pesquisar {
-  border: 1px solid rgba(255, 255, 0, 0.75);
-  color: rgba(255, 255, 0, 0.75);
+  border: 1px solid rgba(255, 255, 0, 0.9);
+  color: rgba(255, 255, 0, 0.9);
   background-color: rgb(0, 0, 0);
 }
 
 #pesquisar:active {
-  background-color: rgba(255, 255, 0, 0.75);
+  background-color: rgba(255, 255, 0, 0.9);
   color: rgb(0, 0, 0);
 }
 
 #recursos-api .card {
   background-color: rgb(0, 0, 0);
-  border: 2px solid rgba(255, 255, 0, 0.75);
-  color: rgba(255, 255, 0, 0.75);
+  border: 2px solid rgba(255, 255, 0, 0.9);
+  color: rgba(255, 255, 0, 0.9);
   height: 200px;
   text-transform: uppercase;
   justify-content: center;
@@ -76,6 +91,6 @@ button:focus {
 }
 
 #recursos-api .card:active {
-  background-color: rgba(255, 255, 0, 0.75);
+  background-color: rgba(255, 255, 0, 0.9);
   color: rgb(0, 0, 0);
 }
