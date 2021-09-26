@@ -1,5 +1,7 @@
 const container_personagens = document.getElementById('container-personagens')
 const indice_pagina = document.getElementById('indice-pagina')
+const pesquisar = document.getElementById('pesquisar')
+const entrada = document.getElementById('entrada')
 
 const url_base = "https://swapi.dev/api/"
 
@@ -12,14 +14,19 @@ const fetchSwapi = async url => {
 const criarLista = dados => {
     let lista = ''
 
-    for (let i = 0; i < dados.results.length; i++) {
-        lista += `
-        <button type="button" class="btn list-group-item" id="item-lista">
-            <span>${dados.results[i].name || dados.results[i].title}</span>
-            <span>Ver mais</span>
-        </button>
-        `
+    if(dados.count)
+    {
+        for (let i = 0; i < dados.results.length; i++) {
+            lista += `
+            <button type="button" class="btn list-group-item" id="item-lista">
+                <span>${dados.results[i].name || dados.results[i].title}</span>
+                <span>Ver mais</span>
+            </button>
+            `
+        }
     }
+    else
+        lista = '<span id="erro-pesquisa">Nenhum dado foi encontrado.</span>'
     return lista
 }
 
@@ -31,11 +38,11 @@ const indicePagina = (dados, metodo) => {
 
     if (dados.next) {
         pagina_atual = dados.next[dados.next.length - 1] - 1
-        complemento = dados.next.split('api/')[1]
+        complemento = dados.next.split('/')[5]
     }
     else if (dados.previous) {
         pagina_atual = parseInt(dados.previous[dados.previous.length - 1]) + 1
-        complemento = dados.previous.split('api/')[1]
+        complemento = dados.previous.split('/')[5]
     }
     complemento = complemento.substring(0, complemento.length - 1)
 
@@ -50,8 +57,18 @@ const indicePagina = (dados, metodo) => {
     return indices
 }
 
-const listarPersonagens = async (complemento = 'people') => {
-    const dados = await fetchSwapi(`${url_base}${complemento}`)
+pesquisar.addEventListener('click', evento => {
+    evento.preventDefault()
+    const termo = entrada.value.trim()
+
+    if (!termo)
+        listarPersonagens()
+    else
+        listarPersonagens(`/?search=${termo}`)
+})
+
+const listarPersonagens = async (complemento = '') => {
+    const dados = await fetchSwapi(`${url_base}/people/${complemento}`)
     container_personagens.innerHTML = criarLista(dados)
     indice_pagina.innerHTML = indicePagina(dados, 'listarPersonagens')
 }

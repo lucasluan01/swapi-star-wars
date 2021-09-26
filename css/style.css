@@ -20,19 +20,25 @@ button:focus {
   box-shadow: none !important;
 }
 
+#erro-pesquisa {
+  color: rgb(255, 0, 0);
+  text-align: center;
+  font-size: calc(1.25rem);
+}
+
 #indice-pagina {
   padding: 0;
 }
 
 #indice-pagina > button {
   flex: none;
-  background-color: rgba(255, 255, 0, 0.9);
+  background-color: rgb(253, 231, 10);
   border: 1px solid rgb(0, 0, 0);
   color: rgb(0, 0, 0);
 }
 
 #indice-pagina > button:hover {
-  background-color: rgba(255, 255, 0, 0.75);
+  background-color: rgba(253, 231, 31, 0.65);
 }
 
 #item-lista {
@@ -56,10 +62,11 @@ button:focus {
 }
 
 #item-lista:hover span:nth-child(2) {
-  color: rgb(255, 255, 0);
+  color: rgb(253, 231, 31);
 }
+
 #item-lista > span:nth-child(2) {
-  color: rgba(255, 255, 0, 0.75);
+  color: rgba(253, 231, 31, 0.9);
   font-size: 0.875rem;
   padding: 5px 10px;
   border-radius: 5px;
@@ -70,20 +77,20 @@ button:focus {
 }
 
 #pesquisar {
-  border: 1px solid rgba(255, 255, 0, 0.9);
-  color: rgba(255, 255, 0, 0.9);
+  border: 1px solid rgb(253, 231, 31);
+  color: rgb(253, 231, 31);
   background-color: rgb(0, 0, 0);
 }
 
 #pesquisar:active {
-  background-color: rgba(255, 255, 0, 0.9);
+  background-color: rgb(253, 231, 31);
   color: rgb(0, 0, 0);
 }
 
 #recursos-api .card {
   background-color: rgb(0, 0, 0);
-  border: 2px solid rgba(255, 255, 0, 0.9);
-  color: rgba(255, 255, 0, 0.9);
+  border: 2px solid rgb(253, 231, 31);
+  color: rgb(253, 231, 31);
   height: 200px;
   text-transform: uppercase;
   justify-content: center;
@@ -91,6 +98,14 @@ button:focus {
 }
 
 #recursos-api .card:active {
-  background-color: rgba(255, 255, 0, 0.9);
+  background-color: rgb(253, 231, 31);
   color: rgb(0, 0, 0);
+}
+
+#titulo {
+  color: rgb(253, 231, 31);
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 400;
+  font-size: calc(1.5rem);
 }

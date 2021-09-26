@@ -27,6 +27,7 @@
                 </g>
             </svg>
         </a>
+        <h1 id="titulo" class="mb-4">Personagens</h1>
     </header>
 
     <section class="mb-5">
@@ -35,19 +36,19 @@
                 <div class="col-md-9 col-lg-6">
                     <div class="input-group">
                         <input id="entrada" type="text" class="form-control me-2" placeholder="procure por nome...">
-                        <button id="pesquisar" type="submit" class="btn btn-secondary">Pesquisar</button>
+                        <button id="pesquisar" type="submit" class="btn">Pesquisar</button>
                     </div>
                 </div>
             </div>
             <div class="row d-flex justify-content-center">
                 <div class="col-md-9 col-lg-6">
-                    <ul class="list-group" id="container-personagens"></ul>
+                    <ul id="container-personagens" class="list-group"></ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="btn-group me-2 d-flex justify-content-center" id="indice-pagina"></div>
+    <div id="indice-pagina" class="btn-group mb-5 d-flex justify-content-center"></div>
 
     <script src="../js/main.js"></script>
     <script>listarPersonagens()</script>
