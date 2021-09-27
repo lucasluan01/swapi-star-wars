@@ -30,9 +30,9 @@
         <h1 id="titulo" class="mb-4">Personagens</h1>
     </header>
 
-    <!-- Lista Personagem -->
     <section class="mb-5">
         <div class="container">
+            <!-- Barra de Pesquisa -->
             <div class="row d-flex justify-content-center mb-5">
                 <div class="col-md-9 col-lg-6">
                     <div class="input-group">
@@ -41,6 +41,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Lista Personagem -->
             <div class="row d-flex justify-content-center">
                 <div class="col-md-9 col-lg-6">
                     <ul id="container-personagens" class="list-group"></ul>
@@ -55,11 +56,13 @@
     <!-- Modal -->
     <div id="modal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div id="modal-item" class="modal-content">
-
-            </div>
+            <div id="modal-item" class="modal-content"></div>
         </div>
     </div>
+
+    <!-- <div class="spinner-border" role="status" style="color: yellow;">
+        <span class="visually-hidden">Loading...</span>
+    </div> -->
 
     <script src="../js/main.js"></script>
     <script>listarPersonagens()</script>

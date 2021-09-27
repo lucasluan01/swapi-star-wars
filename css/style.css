@@ -149,24 +149,24 @@ button:focus {
   margin: 0;
 }
 
-/* width */
+.spinner-border {
+  color: rgb(253, 231, 31);
+}
+
 ::-webkit-scrollbar {
   width: 12px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: rgba(253, 231, 31, 0.25);
   /* border-radius: 10px; */
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: rgba(253, 231, 31, 0.75);
   /* border-radius: 10px; */
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(253, 231, 31);
 }

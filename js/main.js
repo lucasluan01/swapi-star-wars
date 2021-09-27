@@ -8,6 +8,16 @@ const modal_item = document.getElementById('modal-item')
 
 const url_base = "https://swapi.dev/api/"
 
+const spinnerCarregamento = () => {
+    container_personagens.innerHTML = 
+    `
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+        </div>
+    </div>
+    `
+}
+
 const fetchSwapi = async url => {
     const response = await fetch(url)
     const dados = await response.json()
@@ -155,6 +165,7 @@ container_personagens.addEventListener('click', async evento => {
 })
 
 const listarPersonagens = async (complemento = '') => {
+    spinnerCarregamento()
     const dados = await fetchSwapi(`${url_base}/people/${complemento}`)
     container_personagens.innerHTML = criarLista(dados)
     indice_pagina.innerHTML = indicePagina(dados, 'listarPersonagens')
