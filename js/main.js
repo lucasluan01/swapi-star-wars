@@ -8,16 +8,6 @@ const modal_item = document.getElementById('modal-item')
 
 const url_base = "https://swapi.dev/api/"
 
-const spinnerCarregamento = () => {
-    container_personagens.innerHTML = 
-    `
-    <div class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-        </div>
-    </div>
-    `
-}
-
 const fetchSwapi = async url => {
     const response = await fetch(url)
     const dados = await response.json()
@@ -70,6 +60,27 @@ const indicePagina = (dados, metodo) => {
     return indices
 }
 
+const spinnerCarregamento = (spinner) => {
+    spinner.innerHTML = 
+    `
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+        </div>
+    </div>
+    `
+}
+
+const lista_secao_modal = async (chave) => {
+    const dados_item_lista = await Promise.all(chave.map(url => fetchSwapi(url)))
+    let item_lista = ''
+
+    if(dados_item_lista.length > 0){
+        dados_item_lista.map(item => item.name ? item_lista += `<li>${item.name}</li>` : item_lista += `<li>${item.title}</li>`)
+        return item_lista
+    }
+    return 'N/A'
+}
+
 pesquisar.addEventListener('click', evento => {
     evento.preventDefault()
     const termo = entrada.value.trim()
@@ -78,20 +89,15 @@ pesquisar.addEventListener('click', evento => {
 })
 
 container_personagens.addEventListener('click', async evento => {
+    spinnerCarregamento(modal_item)
     const alvo = evento.target
     const url_item = alvo.getAttribute('data-url-item')
     const dado_item = await fetchSwapi(url_item)
     const planeta_natal = await fetchSwapi(dado_item.homeworld)
-
-    const dados_naves = await Promise.all(dado_item.starships.map(url => fetchSwapi(url)))
-    let string_naves = ''
-
-    if(dados_naves.length > 0)
-        dados_naves.map(item => { string_naves += `<li>${item.name}</li>` })
-    else
-        string_naves = 'Nenhuma nave definida'
-
-
+    const naves = await lista_secao_modal(dado_item.starships)
+    const veiculos = await lista_secao_modal(dado_item.vehicles)
+    const filmes = await lista_secao_modal(dado_item.films)
+    console.log(filmes)
 
     const dados_especies = await Promise.all(dado_item.species.map(url => fetchSwapi(url)))
     let string_especies = ''
@@ -100,29 +106,6 @@ container_personagens.addEventListener('click', async evento => {
         string_especies = dados_especies.map(item => item.name).join(', ')
     else
         string_especies = 'Nenhuma espécie definida'
-    
-
-
-    const dados_veiculos = await Promise.all(dado_item.vehicles.map(url => fetchSwapi(url)))
-    let string_veiculos = ''
-
-    if(dados_veiculos.length > 0)
-        dados_veiculos.map(item => { string_veiculos += `<li>${item.name}</li>` })
-    else
-        string_veiculos = 'Nenhum veículo definido'
-
-
-        
-    const dados_filmes = await Promise.all(dado_item.films.map(url => fetchSwapi(url)))
-    let string_filmes = ''
-
-    if(dados_filmes.length > 0)
-        dados_filmes.map(item => { string_filmes += `<li>${item.title}</li>` })
-    else
-        string_filmes = 'Nenhum filme definido'
-    
-
-
 
     const conteudo = `
     <div class="modal-header">
@@ -144,19 +127,19 @@ container_personagens.addEventListener('click', async evento => {
         <div class="secao-modal">
             <h6>NAVES</h6>
             <ul>
-                ${string_naves}
+                ${naves}
             </ul>
         </div>
         <div class="secao-modal">
             <h6>VEÍCULOS</h6>
             <ul>
-                ${string_veiculos}
+                ${veiculos}
             </ul>
         </div>
         <div class="secao-modal">
             <h6>FILMES</h6>
             <ul>
-                ${string_filmes}
+                ${filmes}
             </ul>
         </div>
     </div>
@@ -165,7 +148,7 @@ container_personagens.addEventListener('click', async evento => {
 })
 
 const listarPersonagens = async (complemento = '') => {
-    spinnerCarregamento()
+    spinnerCarregamento(container_personagens)
     const dados = await fetchSwapi(`${url_base}/people/${complemento}`)
     container_personagens.innerHTML = criarLista(dados)
     indice_pagina.innerHTML = indicePagina(dados, 'listarPersonagens')
