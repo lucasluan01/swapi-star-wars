@@ -5,10 +5,8 @@ const indice_pagina = document.getElementById('indice-pagina')
 const pesquisar = document.getElementById('pesquisar')
 const entrada = document.getElementById('entrada')
 const modal_item = document.getElementById('modal-item')
-const navbar = document.getElementById('navbar')
-const container_pesquisa = document.getElementById('container-pesquisa')
-
 var recurso_atual = ''
+var termo = ''
 
 const url_base = "https://swapi.dev/api/"
 
@@ -87,8 +85,7 @@ const lista_secao_modal = async (chave) => {
 
 pesquisar.addEventListener('click', evento => {
     evento.preventDefault()
-    const termo = entrada.value.trim()
-
+    termo = entrada.value.trim()
     !termo ? listarPersonagens() : listarPersonagens(`/?search=${termo}`)
 })
 
@@ -150,11 +147,14 @@ container_personagens.addEventListener('click', async evento => {
     modal_item.innerHTML = conteudo
 })
 
-navbar.addEventListener('click', evento => { 
+document.getElementById('navbar').addEventListener('click', evento => { 
     const alvo = evento.target
     const recurso = alvo.getAttribute('data-recurso')
 
+    document.getElementById('inicio').style.display = "none"
     document.getElementById('container-pesquisa').style.display = "block";
+    entrada.value = ''
+    termo = ''
 
     if(recurso === "personagens"){
         recurso_atual = 'Personagens'
@@ -162,10 +162,22 @@ navbar.addEventListener('click', evento => {
     }
 })
 
+document.getElementById('logo').addEventListener('click', () => {
+    window.location.reload()
+})
+
 indice_pagina.addEventListener('click', evento => {
     const alvo = evento.target
     let indice = alvo.getAttribute('data-indice')
-    window[`listar${recurso_atual}`](`?page=${indice}`);
+    
+    let final_url = `?page=${indice}`
+    
+    //! Se fizer uma pesquisa, mudar de indice, mudar o que está no input e mudar de indice, o código está fazendo uma nova pesquisa
+    final_url += termo ? `&search=${termo}` : ''
+    console.log(final_url)
+    console.log(termo)
+
+    window[`listar${recurso_atual}`](final_url);
 })
 
 async function listarPersonagens (complemento = '') {
