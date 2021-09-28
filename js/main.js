@@ -5,6 +5,10 @@ const indice_pagina = document.getElementById('indice-pagina')
 const pesquisar = document.getElementById('pesquisar')
 const entrada = document.getElementById('entrada')
 const modal_item = document.getElementById('modal-item')
+const navbar = document.getElementById('navbar')
+const container_pesquisa = document.getElementById('container-pesquisa')
+
+var recurso_atual = ''
 
 const url_base = "https://swapi.dev/api/"
 
@@ -33,7 +37,7 @@ const criarLista = dados => {
     return lista
 }
 
-const indicePagina = (dados, metodo) => {
+const indicePagina = (dados) => {
     let total = Math.ceil(dados.count / 10)
     let pagina_atual = 0
     let indices = ''
@@ -53,7 +57,7 @@ const indicePagina = (dados, metodo) => {
     {
         for (let i = 1; i <= total; i++) {
             indices += `
-            <button type="button" class="btn ${i == pagina_atual ? "disabled" : ''}" onclick="${metodo}('${complemento}${i}')"><strong>${i}</strong></button>
+            <button type="button" class="btn ${i == pagina_atual ? "disabled" : ''}" data-indice="${i}"><strong data-indice="${i}">${i}</strong></button>
             `
         }
     }
@@ -97,7 +101,6 @@ container_personagens.addEventListener('click', async evento => {
     const naves = await lista_secao_modal(dado_item.starships)
     const veiculos = await lista_secao_modal(dado_item.vehicles)
     const filmes = await lista_secao_modal(dado_item.films)
-    console.log(filmes)
 
     const dados_especies = await Promise.all(dado_item.species.map(url => fetchSwapi(url)))
     let string_especies = ''
@@ -105,39 +108,39 @@ container_personagens.addEventListener('click', async evento => {
     if(dados_especies.length > 0)
         string_especies = dados_especies.map(item => item.name).join(', ')
     else
-        string_especies = 'Nenhuma espécie definida'
+        string_especies = 'N/A'
 
     const conteudo = `
     <div class="modal-header">
         <h5 class="modal-title">${dado_item.name}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal""></button>
+        <button type="button" class="btn" data-bs-dismiss="modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FF0000"><path d="M0 0h24v24H0V0z" fill="none" opacity=".87"/><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm4.3 14.3c-.39.39-1.02.39-1.41 0L12 13.41 9.11 16.3c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41L10.59 12 7.7 9.11c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L12 10.59l2.89-2.89c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41z"/></svg></button>
     </div>
     <div class="modal-body">
         <div class="secao-modal">
-            <h6>DADOS PESSOAIS</h6>
+            <h6>-- Dados Pessoais --</h6>
             <ul>
                 <li><span>Altura:</span> ${dado_item.height}</li>
                 <li><span>Peso:</span> ${dado_item.mass}</li>
                 <li><span>Ano de Nascimento:</span> ${dado_item.birth_year}</li>
-                <li><span>Gênero:</span> ${dado_item.gender}</li>
+                <li><span>Genero:</span> ${dado_item.gender}</li>
                 <li><span>Planeta Natal:</span> ${planeta_natal.name}</li>
-                <li><span>Espécie:</span> ${string_especies}</li>
+                <li><span>Especie:</span> ${string_especies}</li>
             </ul>
         </div>
         <div class="secao-modal">
-            <h6>NAVES</h6>
+            <h6>-- Naves --</h6>
             <ul>
                 ${naves}
             </ul>
         </div>
         <div class="secao-modal">
-            <h6>VEÍCULOS</h6>
+            <h6>-- Veiculos --</h6>
             <ul>
                 ${veiculos}
             </ul>
         </div>
         <div class="secao-modal">
-            <h6>FILMES</h6>
+            <h6>-- Filmes --</h6>
             <ul>
                 ${filmes}
             </ul>
@@ -147,9 +150,27 @@ container_personagens.addEventListener('click', async evento => {
     modal_item.innerHTML = conteudo
 })
 
-const listarPersonagens = async (complemento = '') => {
+navbar.addEventListener('click', evento => { 
+    const alvo = evento.target
+    const recurso = alvo.getAttribute('data-recurso')
+
+    document.getElementById('container-pesquisa').style.display = "block";
+
+    if(recurso === "personagens"){
+        recurso_atual = 'Personagens'
+        listarPersonagens()
+    }
+})
+
+indice_pagina.addEventListener('click', evento => {
+    const alvo = evento.target
+    let indice = alvo.getAttribute('data-indice')
+    window[`listar${recurso_atual}`](`?page=${indice}`);
+})
+
+async function listarPersonagens (complemento = '') {
     spinnerCarregamento(container_personagens)
     const dados = await fetchSwapi(`${url_base}/people/${complemento}`)
     container_personagens.innerHTML = criarLista(dados)
-    indice_pagina.innerHTML = indicePagina(dados, 'listarPersonagens')
+    indice_pagina.innerHTML = indicePagina(dados)
 }
