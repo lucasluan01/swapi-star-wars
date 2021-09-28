@@ -1,12 +1,11 @@
 // https://stackoverflow.com/questions/31413749/node-js-promise-all-and-foreach
 
-const container_personagens = document.getElementById('container-personagens')
+const container_recurso = document.getElementById('container-recurso')
 const indice_pagina = document.getElementById('indice-pagina')
 const pesquisar = document.getElementById('pesquisar')
 const entrada = document.getElementById('entrada')
 const modal_item = document.getElementById('modal-item')
-var recurso_atual = ''
-var termo = ''
+var termo = '', diretorio = ''
 
 const url_base = "https://swapi.dev/api/"
 
@@ -24,8 +23,8 @@ const criarLista = dados => {
         for (let i = 0; i < dados.results.length; i++) {
             lista += `
             <button id="item-lista" type="button" class="btn list-group-item" data-url-item="${dados.results[i].url}" data-bs-toggle="modal" data-bs-target="#modal"">
-                <span>${dados.results[i].name || dados.results[i].title}</span>
-                <span>Ver mais</span>
+                <span data-url-item="${dados.results[i].url}">${dados.results[i].name || dados.results[i].title}</span>
+                <span data-url-item="${dados.results[i].url}">Ver mais</span>
             </button>
             `
         }
@@ -36,10 +35,7 @@ const criarLista = dados => {
 }
 
 const indicePagina = (dados) => {
-    let total = Math.ceil(dados.count / 10)
-    let pagina_atual = 0
-    let indices = ''
-    let complemento = ''
+    let pagina_atual = 0, indices = '', complemento = '', total = Math.ceil(dados.count / 10)
 
     if (dados.next) {
         pagina_atual = dados.next[dados.next.length - 1] - 1
@@ -86,10 +82,10 @@ const lista_secao_modal = async (chave) => {
 pesquisar.addEventListener('click', evento => {
     evento.preventDefault()
     termo = entrada.value.trim()
-    !termo ? listarPersonagens() : listarPersonagens(`/?search=${termo}`)
+    !termo ? listarRecurso() : listarRecurso(`/?search=${termo}`)
 })
 
-container_personagens.addEventListener('click', async evento => {
+container_recurso.addEventListener('click', async evento => {
     spinnerCarregamento(modal_item)
     const alvo = evento.target
     const url_item = alvo.getAttribute('data-url-item')
@@ -149,17 +145,14 @@ container_personagens.addEventListener('click', async evento => {
 
 document.getElementById('navbar').addEventListener('click', evento => { 
     const alvo = evento.target
-    const recurso = alvo.getAttribute('data-recurso')
+    diretorio = alvo.getAttribute('data-diretorio')
 
     document.getElementById('inicio').style.display = "none"
     document.getElementById('container-pesquisa').style.display = "block";
     entrada.value = ''
     termo = ''
 
-    if(recurso === "personagens"){
-        recurso_atual = 'Personagens'
-        listarPersonagens()
-    }
+    listarRecurso()
 })
 
 document.getElementById('logo').addEventListener('click', () => {
@@ -171,18 +164,22 @@ indice_pagina.addEventListener('click', evento => {
     let indice = alvo.getAttribute('data-indice')
     
     let final_url = `?page=${indice}`
-    
-    //! Se fizer uma pesquisa, mudar de indice, mudar o que está no input e mudar de indice, o código está fazendo uma nova pesquisa
-    final_url += termo ? `&search=${termo}` : ''
-    console.log(final_url)
-    console.log(termo)
 
-    window[`listar${recurso_atual}`](final_url);
+    final_url += termo ? `&search=${termo}` : ''
+
+    window[`listarRecurso`](final_url);
 })
 
-async function listarPersonagens (complemento = '') {
-    spinnerCarregamento(container_personagens)
-    const dados = await fetchSwapi(`${url_base}/people/${complemento}`)
-    container_personagens.innerHTML = criarLista(dados)
+async function listarRecurso (complemento = '') {
+    spinnerCarregamento(container_recurso)
+    const dados = await fetchSwapi(`${url_base}/${diretorio}/${complemento}`)
+    container_recurso.innerHTML = criarLista(dados)
     indice_pagina.innerHTML = indicePagina(dados)
 }
+
+//? Ocultar div dos indices de pagina quando não aparece
+//? Mudar o navbar para radio ?
+//? data-url-item do item-lista para id ?
+//* Rafatoração das funções para listar recurso e pesquisar
+//* Erro corrigido: a requisição da API para exibir o modal só era feita se o botão fosse clicado no meio, agora clicando sobre o nome ou Ver mais a requisição é feita sem erros
+//*
