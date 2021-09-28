@@ -62,8 +62,7 @@ const spinnerCarregamento = (spinner) => {
     spinner.innerHTML = 
     `
     <div class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-        </div>
+        <div class="spinner-border" role="status"></div>
     </div>
     `
 }
@@ -90,65 +89,138 @@ container_recurso.addEventListener('click', async evento => {
     const alvo = evento.target
     const url_item = alvo.getAttribute('data-url-item')
     const dado_item = await fetchSwapi(url_item)
-    const planeta_natal = await fetchSwapi(dado_item.homeworld)
-    const naves = await lista_secao_modal(dado_item.starships)
-    const veiculos = await lista_secao_modal(dado_item.vehicles)
-    const filmes = await lista_secao_modal(dado_item.films)
-
-    const dados_especies = await Promise.all(dado_item.species.map(url => fetchSwapi(url)))
-    let string_especies = ''
-
-    if(dados_especies.length > 0)
-        string_especies = dados_especies.map(item => item.name).join(', ')
-    else
-        string_especies = 'N/A'
 
     const conteudo = `
     <div class="modal-header">
-        <h5 class="modal-title">${dado_item.name}</h5>
+        <h5 class="modal-title">${dado_item.name ? dado_item.name : dado_item.title}</h5>
         <button type="button" class="btn" data-bs-dismiss="modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FF0000"><path d="M0 0h24v24H0V0z" fill="none" opacity=".87"/><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm4.3 14.3c-.39.39-1.02.39-1.41 0L12 13.41 9.11 16.3c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41L10.59 12 7.7 9.11c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L12 10.59l2.89-2.89c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41z"/></svg></button>
     </div>
     <div class="modal-body">
-        <div class="secao-modal">
-            <h6>-- Dados Pessoais --</h6>
-            <ul>
-                <li><span>Altura:</span> ${dado_item.height}</li>
-                <li><span>Peso:</span> ${dado_item.mass}</li>
-                <li><span>Ano de Nascimento:</span> ${dado_item.birth_year}</li>
-                <li><span>Genero:</span> ${dado_item.gender}</li>
-                <li><span>Planeta Natal:</span> ${planeta_natal.name}</li>
-                <li><span>Especie:</span> ${string_especies}</li>
-            </ul>
-        </div>
-        <div class="secao-modal">
-            <h6>-- Naves --</h6>
-            <ul>
-                ${naves}
-            </ul>
-        </div>
-        <div class="secao-modal">
-            <h6>-- Veiculos --</h6>
-            <ul>
-                ${veiculos}
-            </ul>
-        </div>
-        <div class="secao-modal">
-            <h6>-- Filmes --</h6>
-            <ul>
-                ${filmes}
-            </ul>
-        </div>
+        ${await window['modal' + diretorio[0].toUpperCase() + diretorio.substring(1)](dado_item)}
     </div>
     `
     modal_item.innerHTML = conteudo
 })
+
+async function modalFilms (dado_item) {
+    // const personagens = await fetchSwapi(dado_item.characters)
+    
+    const veiculos = await lista_secao_modal(dado_item.vehicles)
+    const naves = await lista_secao_modal(dado_item.starships)
+    const especies = await lista_secao_modal(dado_item.species)
+    const planetas = await lista_secao_modal(dado_item.planets)
+    const personagens = await lista_secao_modal(dado_item.characters)
+    
+    return `
+    <div class="secao-modal">
+        <h6>-- Parágrafo de abertura --</h6>
+        <ul>
+            <li>Episódio ${dado_item.episode_id}</li>
+            <li>${dado_item.opening_crawl}</li>
+        </ul>
+    </div>
+    <div class="secao-modal">
+        <h6>-- Personagens --</h6>
+        <ul>
+            ${personagens}
+        </ul>
+    </div>
+    <div class="secao-modal">
+        <h6>-- Espécies --</h6>
+        <ul>
+            ${especies}
+        </ul>
+    </div>
+    <div class="secao-modal">
+        <h6>-- Naves --</h6>
+        <ul>
+            ${naves}
+        </ul>
+    </div>
+    <div class="secao-modal">
+        <h6>-- Veículos --</h6>
+        <ul>
+            ${veiculos}
+        </ul>
+    </div>
+    <div class="secao-modal">
+        <h6>-- Planetas --</h6>
+        <ul>
+            ${planetas}
+        </ul>
+    </div>
+    <div class="secao-modal">
+        <h6>-- Diretor(es) --</h6>
+        <ul>
+            ${dado_item.director}
+        </ul>
+    </div>
+    <div class="secao-modal">
+        <h6>-- Produtor(es) --</h6>
+        <ul>
+            ${dado_item.producer}
+        </ul>
+    </div>
+    <div class="secao-modal">
+    <ul><li>Lançado em ${dado_item.release_date}</li></ul>
+    </div>
+    `
+}
+
+async function modalPeople (dado_item) {
+    console.log('passou')
+    const planeta_natal = await fetchSwapi(dado_item.homeworld)
+    const naves = await lista_secao_modal(dado_item.starships)
+    const veiculos = await lista_secao_modal(dado_item.vehicles)
+    const filmes = await lista_secao_modal(dado_item.films)
+    let especies = ''
+
+    const dados_especies = await Promise.all(dado_item.species.map(url => fetchSwapi(url)))
+
+    if(dados_especies.length > 0)
+        especies = dados_especies.map(item => item.name).join(', ')
+    else
+        especies = 'N/A'
+
+    return `
+    <div class="secao-modal">
+        <h6>-- Dados Pessoais --</h6>
+        <ul>
+            <li><span>Altura:</span> ${dado_item.height}</li>
+            <li><span>Peso:</span> ${dado_item.mass}</li>
+            <li><span>Ano de Nascimento:</span> ${dado_item.birth_year}</li>
+            <li><span>Gênero:</span> ${dado_item.gender}</li>
+            <li><span>Planeta Natal:</span> ${planeta_natal.name}</li>
+            <li><span>Espécie:</span> ${especies}</li>
+        </ul>
+    </div>
+    <div class="secao-modal">
+        <h6>-- Naves --</h6>
+        <ul>
+            ${naves}
+        </ul>
+    </div>
+    <div class="secao-modal">
+        <h6>-- Veículos --</h6>
+        <ul>
+            ${veiculos}
+        </ul>
+    </div>
+    <div class="secao-modal">
+        <h6>-- Filmes --</h6>
+        <ul>
+            ${filmes}
+        </ul>
+    </div>
+    `
+}
 
 document.getElementById('navbar').addEventListener('click', evento => { 
     const alvo = evento.target
     diretorio = alvo.getAttribute('data-diretorio')
 
     document.getElementById('inicio').style.display = "none"
-    document.getElementById('container-pesquisa').style.display = "block";
+    document.getElementById('container-pesquisa').style.display = "block"
     entrada.value = ''
     termo = ''
 
@@ -167,7 +239,7 @@ indice_pagina.addEventListener('click', evento => {
 
     final_url += termo ? `&search=${termo}` : ''
 
-    window[`listarRecurso`](final_url);
+    window['listarRecurso'](final_url)
 })
 
 async function listarRecurso (complemento = '') {
@@ -180,6 +252,5 @@ async function listarRecurso (complemento = '') {
 //? Ocultar div dos indices de pagina quando não aparece
 //? Mudar o navbar para radio ?
 //? data-url-item do item-lista para id ?
-//* Rafatoração das funções para listar recurso e pesquisar
-//* Erro corrigido: a requisição da API para exibir o modal só era feita se o botão fosse clicado no meio, agora clicando sobre o nome ou Ver mais a requisição é feita sem erros
-//*
+//? ocultar indice de pagina enquanto a lista carrega
+//* 
