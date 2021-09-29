@@ -103,8 +103,6 @@ container_recurso.addEventListener('click', async evento => {
 })
 
 async function modalFilms (dado_item) {
-    // const personagens = await fetchSwapi(dado_item.characters)
-    
     const veiculos = await lista_secao_modal(dado_item.vehicles)
     const naves = await lista_secao_modal(dado_item.starships)
     const especies = await lista_secao_modal(dado_item.species)
@@ -215,10 +213,10 @@ async function modalPeople (dado_item) {
     `
 }
 
-document.getElementById('navbar').addEventListener('click', evento => { 
+document.getElementById('nav-recuros').addEventListener('click', evento => {
     const alvo = evento.target
     diretorio = alvo.getAttribute('data-diretorio')
-
+    
     document.getElementById('inicio').style.display = "none"
     document.getElementById('container-pesquisa').style.display = "block"
     entrada.value = ''
@@ -243,6 +241,7 @@ indice_pagina.addEventListener('click', evento => {
 })
 
 async function listarRecurso (complemento = '') {
+    // document.getElementById('indice-pagina').style.display = "none"
     spinnerCarregamento(container_recurso)
     const dados = await fetchSwapi(`${url_base}/${diretorio}/${complemento}`)
     container_recurso.innerHTML = criarLista(dados)
@@ -250,7 +249,6 @@ async function listarRecurso (complemento = '') {
 }
 
 //? Ocultar div dos indices de pagina quando não aparece
-//? Mudar o navbar para radio ?
 //? data-url-item do item-lista para id ?
 //? ocultar indice de pagina enquanto a lista carrega
 //* 

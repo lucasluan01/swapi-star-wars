@@ -12,8 +12,9 @@ body {
 }
 
 input:focus,
-button:focus {
-  outline: 0;
+button:focus,
+label.btn {
+  outline: 0 !important;
   box-shadow: none !important;
 }
 
@@ -22,7 +23,9 @@ header {
 }
 
 nav {
+  display: flex;
   background-color: #bf5b04;
+  justify-content: center;
 }
 
 svg:nth-child(2) {
@@ -96,29 +99,20 @@ svg:nth-child(2) {
   height: 60px;
 }
 
-#navbar {
+#nav-recuros {
   text-transform: uppercase;
+  flex-wrap: wrap;
 }
 
-#navbar a {
+#nav-recuros > label {
   color: #f2f2f2;
   padding: 4px 16px;
   border-radius: 0;
 }
 
-#navbar a:focus {
-  color: #0f0f0f;
-  padding: 4px 16px;
-  background-color: #f2f2f2;
-}
-
-#navbar a:hover {
+#nav-recuros > label:hover {
   border-bottom: 4px solid #f2f2f2;
   padding-bottom: 0;
-}
-
-#navbar ul {
-  justify-content: center;
 }
 
 #pesquisar {
@@ -129,6 +123,13 @@ svg:nth-child(2) {
 #pesquisar > svg {
   height: 30px;
   width: auto;
+}
+
+.btn-check:checked + .btn,
+.btn-check:active {
+  color: #0f0f0f !important;
+  padding: 4px 16px;
+  background-color: #f2f2f2;
 }
 
 .modal-content {
@@ -175,11 +176,11 @@ svg:nth-child(2) {
   color: #ffe81f;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 /* ::-webkit-scrollbar {
+  display: none;
+} */
+
+::-webkit-scrollbar {
   width: 14px;
 }
 
@@ -193,4 +194,4 @@ svg:nth-child(2) {
 
 ::-webkit-scrollbar-thumb:active {
   background-color: #bf5b04;
-} */
+}
