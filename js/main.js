@@ -1,5 +1,8 @@
 // https://stackoverflow.com/questions/31413749/node-js-promise-all-and-foreach
 
+// Motivo do target disparar 2 vezes
+// http://loopinfinito.com.br/2013/05/14/entendendo-captura-e-propagacao-de-eventos/
+
 const container_recurso = document.getElementById('container-recurso')
 const indice_pagina = document.getElementById('indice-pagina')
 const pesquisar = document.getElementById('pesquisar')
@@ -166,7 +169,6 @@ async function modalFilms (dado_item) {
 }
 
 async function modalPeople (dado_item) {
-    console.log('passou')
     const planeta_natal = await fetchSwapi(dado_item.homeworld)
     const naves = await lista_secao_modal(dado_item.starships)
     const veiculos = await lista_secao_modal(dado_item.vehicles)
@@ -216,13 +218,12 @@ async function modalPeople (dado_item) {
 document.getElementById('nav-recuros').addEventListener('click', evento => {
     const alvo = evento.target
     diretorio = alvo.getAttribute('data-diretorio')
-    
     document.getElementById('inicio').style.display = "none"
     document.getElementById('container-pesquisa').style.display = "block"
     entrada.value = ''
     termo = ''
-
-    listarRecurso()
+    
+        listarRecurso()
 })
 
 document.getElementById('logo').addEventListener('click', () => {
@@ -241,11 +242,13 @@ indice_pagina.addEventListener('click', evento => {
 })
 
 async function listarRecurso (complemento = '') {
-    // document.getElementById('indice-pagina').style.display = "none"
     spinnerCarregamento(container_recurso)
-    const dados = await fetchSwapi(`${url_base}/${diretorio}/${complemento}`)
-    container_recurso.innerHTML = criarLista(dados)
-    indice_pagina.innerHTML = indicePagina(dados)
+    
+    if(diretorio) {
+        const dados = await fetchSwapi(`${url_base}/${diretorio}/${complemento}`)
+        container_recurso.innerHTML = criarLista(dados)
+        indice_pagina.innerHTML = indicePagina(dados)
+    }
 }
 
 //? Ocultar div dos indices de pagina quando não aparece
