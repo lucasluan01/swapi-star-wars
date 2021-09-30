@@ -1,3 +1,5 @@
+// https://betterprogramming.pub/fun-with-html-canvas-lets-create-a-star-field-a46b0fed5002
+
 const canvas = document.getElementById("canvas");
         const c = canvas.getContext("2d");
 
@@ -30,7 +32,7 @@ const canvas = document.getElementById("canvas");
             return out;
         };
 
-        let stars = makeStars(12500);
+        let stars = makeStars(15000);
 
         const clear = () => {
             c.fillStyle = "black";
@@ -65,7 +67,7 @@ const canvas = document.getElementById("canvas");
             let elapsed = time - prevTime;
             prevTime = time;
 
-            moveStars(elapsed * 0.025);
+            moveStars(elapsed * 0.03);
 
             clear();
 
