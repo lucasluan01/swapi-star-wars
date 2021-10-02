@@ -129,7 +129,6 @@ document.getElementById('nav-recuros').addEventListener('click', evento => {
     }
     document.getElementById("entrada").placeholder = `procure por ${tipos_pesquisa}...`;
 
-    document.getElementById('inicio').style.display = "none"
     document.getElementById('container-pesquisa').style.display = "block"
     entrada.value = ''
     termo = ''
@@ -149,7 +148,9 @@ indice_pagina.addEventListener('click', evento => {
 
     final_url += termo ? `&search=${termo}` : ''
 
-    window['listarRecurso'](final_url)
+    // ! não tem necessidade disso, já pode chamar o método direto
+    // window['listarRecurso'](final_url)
+    listarRecurso(final_url)
 })
 
 async function listarRecurso (complemento = '') {
