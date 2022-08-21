@@ -6,7 +6,7 @@
 
 ## 💻 Sobre o projeto
 
-SWAPI é o conjunto de dados de Star Wars, apresentando Pessoas, Filmes, Espécies, Naves, Veículos e Planetas de todos dos sete filmes de Star Wars.
+Star Wars: site responsivo, construído a partir da API de Star Wars que contém dados de planetas, naves espaciais veículos, pessoas, filmes e espécies. No site é possível visualizar detalhes, navegar entre as páginas e pesquisar.
 
 ## 🧭 Rodando a aplicação web (Front End)
 
